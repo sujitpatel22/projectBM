@@ -15,7 +15,7 @@ private:
     string username = "";
     string password = "";
     string DOB = "";
-    long phoneNo;
+    unsigned long long phoneNo;
     bool sessionSet = false;
 
 public:
@@ -78,7 +78,7 @@ public:
             int i = 0;
             cout << endl
                  << "Phone Number :" << endl;
-            phoneNo = input_long();
+            phoneNo = input_ullong();
             // Phone Number validation
             if (is_negative(phoneNo) || to_string(phoneNo).length() < 10)
             {
@@ -109,6 +109,7 @@ public:
         sessionSet = true;
         cout << endl
              << "Press any key to continue!" << endl;
+        cin.clear();
         cin.ignore();
     }
 
@@ -143,7 +144,7 @@ public:
     // To get password
     string getPassword() { return password; }
     // To get phone number
-    long getPhoneNo() { return phoneNo; }
+    unsigned long long getPhoneNo() { return phoneNo; }
 
     // ~User()
     // {

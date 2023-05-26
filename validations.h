@@ -76,37 +76,39 @@ int input_int()
         }
         catch (const std::exception &e)
         {
-            cout << "invalid input! Enter again" << endl;
+
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             continue;
         }
         return n;
     }
 }
 
-long input_long()
+unsigned long long input_ullong()
 {
-    long n;
-    // while (true)
-    // {
-    //     try
-    //     {
-    cin >> n;
-    //     if (std::cin.fail())
-    //     {
-    //         cin.clear();
-    //         throw std::runtime_error("Invalid input.");
-    //     }
-    //     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    // }
-    // catch (const std::exception &e)
-    // {
-    //     cout << "Invalid input! Enter again: " << endl;
-    //     cin.clear();
-    //     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    //     continue;
-    // }
-    return n;
-    // }
+    unsigned long long n;
+    while (true)
+    {
+        try
+        {
+            cin >> n;
+            if (std::cin.fail())
+            {
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                throw std::runtime_error("Invalid input.");
+            }
+        }
+        catch (const std::exception &e)
+        {
+            cout << "Invalid input! Enter again: " << endl;
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            continue;
+        }
+        return n;
+    }
 }
 
 unsigned long long input_long_long()

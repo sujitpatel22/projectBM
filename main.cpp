@@ -20,25 +20,25 @@ int main(void)
 
     // Hereafter all the functions will be oprated through Bank CUI;
     Bank bank;
-    vector<Account> accounts = bank.getAccounts();
-    vector<User> users = bank.getUsers();
-    system("cls");
-    cout << "Starting App..." << endl;
+    // vector<Account> accounts = bank.getAccounts();
+    // vector<User> users = bank.getUsers();
+    // system("cls");
+    // cout << "Starting App..." << endl;
 
-    cout << "Hang on! Loading User data..." << endl;
-    loadUsers(users);
-    cout
-        << "Done! Loading Account data..." << endl;
-    loadAccounts(accounts);
-    cout
-        << "Done! Loading Transections data..." << endl;
-    loadTransections(accounts);
+    // cout << "Hang on! Loading User data..." << endl;
+    // loadUsers(users);
+    // cout
+    //     << "Done! Loading Account data..." << endl;
+    // loadAccounts(accounts);
+    // cout
+    //     << "Done! Loading Transections data..." << endl;
+    // loadTransections(accounts);
 
-    if (!bank.openCSV())
-    {
-        cout << "Unable to open CSV files to write data" << endl;
-        exit(1);
-    }
+    // if (!bank.openCSV())
+    // {
+    //     cout << "Unable to open CSV files to write data" << endl;
+    //     exit(1);
+    // }
     bank.menu();
 }
 

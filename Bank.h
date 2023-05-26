@@ -196,6 +196,7 @@ int Bank::login()
           << "User not found!" << endl;
      cout << endl
           << "Press any key to continue!" << endl;
+          cin.clear();
      cin.ignore();
      return -1;
 }
@@ -238,7 +239,7 @@ bool Bank::createAccount(int _userId)
      Account newAcc = Account(_userId, setAccId++, ++setAccNo, user->getPhoneNo());
      if (addAccount(newAcc, *user))
      {
-          newAcc.save_csv_data(accounts_csv);
+          // newAcc.save_csv_data(accounts_csv);
           return true;
      }
      else
@@ -284,6 +285,7 @@ bool Bank::send(int _userId)
                << "Account not found!" << endl;
           cout << endl
                << "Press any key to continue!" << endl;
+               cin.clear();
           cin.ignore();
           return false;
      }
@@ -306,6 +308,7 @@ bool Bank::send(int _userId)
                << "Account not found!" << endl;
           cout << endl
                << "Press any key to continue!" << endl;
+               cin.clear();
           cin.ignore();
           return false;
      }
@@ -320,26 +323,23 @@ verify:
           amount = input_float();
      } while (amount <= 0);
      system("cls");
-     do
+     if (users[_userId].accIds.size() == 0)
+          return false;
+     else if (users[_userId].accIds.size() == 1)
+          sender = &accounts[users[_userId].accIds[0]];
+     else
      {
-          if (users[_userId].accIds.size() == 0)
-               return false;
-          else if (users[_userId].accIds.size() == 1)
-               sender = &accounts[users[_userId].accIds[0]];
-          else
+          do
           {
-               do
-               {
-                    cout << endl
-                         << "Select Account to pay from" << endl;
-                    for (int i = 0; i < users[_userId].accIds.size(); i++)
-                         cout << "Account [" << i << "]\tAccount No: " << users[_userId].accNumbers[i] << endl;
-                    option = input_int();
-               } while (option < 0 || option >= users[_userId].accIds.size());
-               int sender_acc = users[_userId].accIds[option];
-               sender = &accounts[sender_acc];
-          }
-     } while (option < 0 || option >= users[_userId].accIds.size());
+               cout << endl
+                    << "Select Account to pay from" << endl;
+               for (int i = 0; i < users[_userId].accIds.size(); i++)
+                    cout << "Account [" << i << "]\tAccount No: " << users[_userId].accNumbers[i] << endl;
+               option = input_int();
+          } while (option < 0 || option >= users[_userId].accIds.size());
+          int sender_acc = users[_userId].accIds[option];
+          sender = &accounts[sender_acc];
+     }
      cout << endl;
 
      if (amount > sender->getBalance())
@@ -370,13 +370,14 @@ verify:
                // To add transection entry in the user's account in vector<Transection> transections
                Transection sendTrans(sender->getAccId(), setTransId, "send", amount, sender->getUpi(), reciever->getUpi(), str_mode);
                sender->transections.push_back(sendTrans);
-               sendTrans.save_csv_data(transection_csv);
+               // sendTrans.save_csv_data(transection_csv);
                Transection recieveTrans(reciever->getAccId(), setTransId, "recieved", amount, sender->getUpi(), reciever->getUpi(), str_mode);
                reciever->transections.push_back(recieveTrans);
-               recieveTrans.save_csv_data(transection_csv);
+               // recieveTrans.save_csv_data(transection_csv);
                ++setTransId;
                cout << endl
                     << "Press any key to continue!" << endl;
+                    cin.clear();
                cin.ignore();
                return true;
           }
@@ -384,6 +385,7 @@ verify:
                << "Wrong Pin!" << endl;
           cout << endl
                << "Press any key to continue!" << endl;
+               cin.clear();
           cin.ignore();
      }
      return false;
@@ -444,6 +446,7 @@ bool Bank::deposit(int _userId)
 
      cout << endl
           << "Press any key to continue!" << endl;
+          cin.clear();
      cin.ignore();
      return true;
 }
@@ -491,10 +494,11 @@ bool Bank::withdraw(int _userId)
           // To add transection entry in the user's account in vector<Transection> transections
           Transection sendTrans(withdraw_acc->getAccId(), setTransId, "withdraw", amount, withdraw_acc->getUpi(), "Cash", "ATM");
           withdraw_acc->transections.push_back(sendTrans);
-          sendTrans.save_csv_data(transection_csv);
+          // sendTrans.save_csv_data(transection_csv);
           ++setTransId;
           cout << endl
                << "Press any key to continue!" << endl;
+               cin.clear();
           cin.ignore();
           return true;
      }
@@ -502,6 +506,7 @@ bool Bank::withdraw(int _userId)
           << "Wrong Pin!" << endl;
      cout << endl
           << "Press any key to continue!" << endl;
+          cin.clear();
      cin.ignore();
      return false;
 }
@@ -557,6 +562,7 @@ bool Bank::accInfo(int _userId)
 
           cout << endl
                << "Press any key to continue!" << endl;
+               cin.clear();
           cin.ignore();
           return true;
      }
@@ -592,12 +598,14 @@ bool Bank::listAccTransections(int _userId)
                << "Wrong Pin! " << endl;
           cout << endl
                << "Press any key to continue!" << endl;
+               cin.clear();
           cin.ignore();
           return false;
      }
      acc->listTransections();
      cout << endl
           << "Press any key to continue!" << endl;
+          cin.clear();
      cin.ignore();
      return true;
 }
