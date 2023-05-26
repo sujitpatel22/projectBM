@@ -196,8 +196,9 @@ int Bank::login()
           << "User not found!" << endl;
      cout << endl
           << "Press any key to continue!" << endl;
-          cin.clear();
+     cin.clear();
      cin.ignore();
+     cin.get();
      return -1;
 }
 
@@ -266,56 +267,8 @@ bool Bank::send(int _userId)
           cout << "[2]\tAccount number" << endl;
           option = input_int();
      } while (option < 1 || option > 2);
-     system("cls");
-     if (option == 1)
-     {
-          str_mode = "UPI";
-          cout << endl
-               << "Enter UPI id" << endl;
-          UPIid = input_string();
-          for (auto acc : accounts)
-          {
-               if (acc.getUpi().compare(UPIid) == 0)
-               {
-                    reciever_acc = acc.getAccId();
-                    goto verify;
-               }
-          }
-          cout << endl
-               << "Account not found!" << endl;
-          cout << endl
-               << "Press any key to continue!" << endl;
-               cin.clear();
-          cin.ignore();
-          return false;
-     }
-     else
-     {
-          str_mode = "Account Number";
-          cout << endl
-               << "Enter Account number" << endl;
-          acc_number = input_long_long();
 
-          for (auto acc : accounts)
-          {
-               if (acc_number == acc.getAccNumber())
-               {
-                    reciever_acc = acc.getAccId();
-                    goto verify;
-               }
-          }
-          cout << endl
-               << "Account not found!" << endl;
-          cout << endl
-               << "Press any key to continue!" << endl;
-               cin.clear();
-          cin.ignore();
-          return false;
-     }
-verify:
-     system("cls");
      Account *sender;
-     Account *reciever = &accounts[reciever_acc];
      do
      {
           cout << endl
@@ -340,8 +293,79 @@ verify:
           int sender_acc = users[_userId].accIds[option];
           sender = &accounts[sender_acc];
      }
-     cout << endl;
 
+     system("cls");
+     if (option == 1)
+     {
+          str_mode = "UPI";
+          cout << endl
+               << "Enter UPI id" << endl;
+          UPIid = input_string();
+          if (UPIid.compare(sender->getUpi()))
+          {
+
+               cout << endl
+                    << "Sender and Reciever acount cannot be same!" << endl;
+               cout << endl
+                    << "Press any key to continue!" << endl;
+               cin.ignore();
+               cin.get();
+               return false;
+          }
+          for (auto acc : accounts)
+          {
+               if (acc.getUpi().compare(UPIid) == 0)
+               {
+                    reciever_acc = acc.getAccId();
+                    goto verify;
+               }
+          }
+          cout << endl
+               << "Account not found!" << endl;
+          cout << endl
+               << "Press any key to continue!" << endl;
+          cin.clear();
+          cin.ignore();
+          cin.get();
+          return false;
+     }
+     else
+     {
+          str_mode = "Account Number";
+          cout << endl
+               << "Enter Account number" << endl;
+          acc_number = input_ullong();
+          if (acc_number == sender->getAccNumber())
+          {
+
+               cout << endl
+                    << "Sender and Reciever acount cannot be same!" << endl;
+               cout << endl
+                    << "Press any key to continue!" << endl;
+               cin.ignore();
+               cin.get();
+               return false;
+          }
+          for (auto acc : accounts)
+          {
+               if (acc_number == acc.getAccNumber())
+               {
+                    reciever_acc = acc.getAccId();
+                    goto verify;
+               }
+          }
+          cout << endl
+               << "Account not found!" << endl;
+          cout << endl
+               << "Press any key to continue!" << endl;
+          cin.clear();
+          cin.ignore();
+          cin.get();
+          return false;
+     }
+verify:
+     Account *reciever = &accounts[reciever_acc];
+     system("cls");
      if (amount > sender->getBalance())
      {
           cout
@@ -368,25 +392,27 @@ verify:
                cout << "Credited " << amount << " in account " << reciever->getAccNumber() << endl;
 
                // To add transection entry in the user's account in vector<Transection> transections
-               Transection sendTrans(sender->getAccId(), setTransId, "send", amount, sender->getUpi(), reciever->getUpi(), str_mode);
+               Transection sendTrans(sender->getAccId(), setTransId, "send", amount, sender->getAccHolder(), reciever->getAccHolder(), str_mode);
                sender->transections.push_back(sendTrans);
                // sendTrans.save_csv_data(transection_csv);
-               Transection recieveTrans(reciever->getAccId(), setTransId, "recieved", amount, sender->getUpi(), reciever->getUpi(), str_mode);
+               Transection recieveTrans(reciever->getAccId(), setTransId, "recieved", amount, sender->getAccHolder(), reciever->getAccHolder(), str_mode);
                reciever->transections.push_back(recieveTrans);
                // recieveTrans.save_csv_data(transection_csv);
                ++setTransId;
                cout << endl
                     << "Press any key to continue!" << endl;
-                    cin.clear();
+               cin.clear();
                cin.ignore();
+               cin.get();
                return true;
           }
           cout << endl
                << "Wrong Pin!" << endl;
           cout << endl
                << "Press any key to continue!" << endl;
-               cin.clear();
+          cin.clear();
           cin.ignore();
+          cin.get();
      }
      return false;
 }
@@ -446,8 +472,9 @@ bool Bank::deposit(int _userId)
 
      cout << endl
           << "Press any key to continue!" << endl;
-          cin.clear();
+     cin.clear();
      cin.ignore();
+     cin.get();
      return true;
 }
 
@@ -492,22 +519,24 @@ bool Bank::withdraw(int _userId)
           cout << endl
                << "Withdrawn " << amount << " from account " << withdraw_acc->getAccNumber() << endl;
           // To add transection entry in the user's account in vector<Transection> transections
-          Transection sendTrans(withdraw_acc->getAccId(), setTransId, "withdraw", amount, withdraw_acc->getUpi(), "Cash", "ATM");
+          Transection sendTrans(withdraw_acc->getAccId(), setTransId, "withdraw", amount, to_string(withdraw_acc->getAccNumber()), "Cash", "ATM");
           withdraw_acc->transections.push_back(sendTrans);
           // sendTrans.save_csv_data(transection_csv);
           ++setTransId;
           cout << endl
                << "Press any key to continue!" << endl;
-               cin.clear();
+          cin.clear();
           cin.ignore();
+          cin.get();
           return true;
      }
      cout << endl
           << "Wrong Pin!" << endl;
      cout << endl
           << "Press any key to continue!" << endl;
-          cin.clear();
+     cin.clear();
      cin.ignore();
+     cin.get();
      return false;
 }
 
@@ -562,8 +591,9 @@ bool Bank::accInfo(int _userId)
 
           cout << endl
                << "Press any key to continue!" << endl;
-               cin.clear();
+          cin.clear();
           cin.ignore();
+          cin.get();
           return true;
      }
 }
@@ -598,15 +628,17 @@ bool Bank::listAccTransections(int _userId)
                << "Wrong Pin! " << endl;
           cout << endl
                << "Press any key to continue!" << endl;
-               cin.clear();
+          cin.clear();
           cin.ignore();
+          cin.get();
           return false;
      }
      acc->listTransections();
      cout << endl
           << "Press any key to continue!" << endl;
-          cin.clear();
+     cin.clear();
      cin.ignore();
+     cin.get();
      return true;
 }
 

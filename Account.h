@@ -59,7 +59,7 @@ public:
         accHolder = input_strictString();
         system("cls");
         cout << endl
-             << "Set transection pin (Applicable to UPI & direct account transefers)" << endl;
+             << "Set transection pin (Applicable to UPI & direct account transfers)" << endl;
         accPin = input_int();
         system("cls");
         cout << endl
@@ -81,6 +81,7 @@ public:
              << "Press any key to continue!" << endl;
         cin.clear();
         cin.ignore();
+        cin.get();
     }
 
     // To update the account
@@ -121,8 +122,8 @@ public:
         }
         cout << endl
              << "Press any key to continue!" << endl;
-        cin.clear();
         cin.ignore();
+        cin.get();
     }
 
     // ~Account()

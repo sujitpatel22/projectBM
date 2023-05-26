@@ -8,6 +8,17 @@
 #include <windows.h>
 using namespace std;
 
+// To check if a number is negative
+template <typename T>
+T is_negative(T num)
+{
+    if (num < 0)
+    {
+        return true;
+    }
+    return false;
+}
+
 string input_string()
 {
     string s;
@@ -34,6 +45,7 @@ string input_string()
     }
 }
 
+// To check if a string contains only alphabetical characters
 string input_strictString()
 {
     string s;
@@ -85,9 +97,9 @@ int input_int()
     }
 }
 
-unsigned long long input_ullong()
+long long input_ullong()
 {
-    unsigned long long n;
+    long long n;
     while (true)
     {
         try
@@ -95,9 +107,13 @@ unsigned long long input_ullong()
             cin >> n;
             if (std::cin.fail())
             {
+                throw std::runtime_error("Invalid input.");
+            }
+            else if (is_negative(n))
+            {
                 cin.clear();
                 cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                throw std::runtime_error("Invalid input.");
+                continue;
             }
         }
         catch (const std::exception &e)
@@ -111,9 +127,9 @@ unsigned long long input_ullong()
     }
 }
 
-unsigned long long input_long_long()
+long long input_llong()
 {
-    unsigned long long n;
+    long long n;
     while (true)
     {
         try
@@ -122,9 +138,9 @@ unsigned long long input_long_long()
             if (std::cin.fail())
             {
                 cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 throw std::runtime_error("Invalid input.");
             }
-            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
         catch (const std::exception &e)
         {
@@ -163,16 +179,7 @@ float input_float()
     }
 }
 
-template <typename T>
-T is_negative(T num)
-{
-    if (num < 0)
-    {
-        return true;
-    }
-    return false;
-}
-
+// To validate if a date entered is a valid date
 bool is_date(string dob)
 {
     // int days[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -201,6 +208,7 @@ bool is_date(string dob)
     return true;
 }
 
+// To turn on/off console echo
 bool SetConsoleEcho(bool enableEcho)
 {
 

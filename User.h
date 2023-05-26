@@ -15,7 +15,7 @@ private:
     string username = "";
     string password = "";
     string DOB = "";
-    unsigned long long phoneNo;
+    long long phoneNo;
     bool sessionSet = false;
 
 public:
@@ -32,7 +32,7 @@ public:
             system("cls");
             cout << "Welcome to User registration" << endl;
             cout << endl
-                 << "Username: " << endl;
+                 << "Username: (Must be 8 to 25 characters long)" << endl;
             username = input_string();
             if (username.length() < 8 || username.length() > 25)
             {
@@ -57,7 +57,7 @@ public:
             system("cls");
             SetConsoleEcho(true);
             cout << endl
-                 << "Password: (Must be atleast 8 characters long)" << endl;
+                 << "Password: (Must be 8 to 25 characters long)" << endl;
             SetConsoleEcho(false);
             password = input_string();
             if (password.length() >= 8 && password.length() <= 25)
@@ -66,6 +66,7 @@ public:
             }
         }
         SetConsoleEcho(true);
+        system("cls");
         cout << endl
              << "Date of Birth (format: DDMMYYYY) :" << endl;
         do
@@ -78,7 +79,7 @@ public:
             int i = 0;
             cout << endl
                  << "Phone Number :" << endl;
-            phoneNo = input_ullong();
+            phoneNo = input_llong();
             // Phone Number validation
             if (is_negative(phoneNo) || to_string(phoneNo).length() < 10)
             {
@@ -108,9 +109,14 @@ public:
              << "password: " << password << endl;
         sessionSet = true;
         cout << endl
+             << "DoB: " << DOB[0] + DOB[1] << "-" << DOB[2] + DOB[3] << "-" << DOB[4] + DOB[5] + DOB[6] + DOB[7] << endl;
+        cout << endl
+             << "Phone number: " << phoneNo << endl;
+        cout << endl
              << "Press any key to continue!" << endl;
         cin.clear();
         cin.ignore();
+        cin.get();
     }
 
     // Authenticate User
