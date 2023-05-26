@@ -20,6 +20,7 @@ Validations.h: Every input required by the user in the application is processed 
 there are total 3 csv files to be loaded:
 users_csv, accounts_csv and transection csv (please ignore the users_csv file and need not to edit any related function in User.h and function bool loadUsers() in main.cpp).
 For every action performed, the 'Bank' class in bank.h file updates the data in the csv files with updated data like account balance, adding new transection details, etc.
+Thereafter the bank object is created and the required functions are loaded, then the bank menu is loaded.
 #
 Note: Some libraries may not work on github codespaces!
 #
