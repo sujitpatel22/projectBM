@@ -43,19 +43,19 @@ public:
      bool listAccTransections(int);
      bool closeAccount(int);
 
-     vector<Account> getAccounts()
+     vector<Account> *getAccounts()
      {
-          return accounts;
+          return &accounts;
      }
-     vector<User> getUsers()
+     vector<User> *getUsers()
      {
-          return users;
+          return &users;
      }
 
      // Opening the data file for synchronus data update
      bool openCSV()
      {
-          accounts_csv = ofstream("data_csv/accounsts_data.csv", ios::app);
+          accounts_csv = ofstream("data_csv/accounts_data.csv", ios::app);
           if (!accounts_csv)
           {
                cout << "Error loading the accounts_data_csv file!";
@@ -166,8 +166,9 @@ int Bank::_register()
 {
      User newUser(setUserId++, users);
      users.push_back(newUser);
-     return newUser.getUserId();
+     createAccount(newUser.getUserId());
      // newUser.save_csv_data(users_csv);
+     return newUser.getUserId();
 }
 
 int Bank::login()
@@ -246,7 +247,8 @@ bool Bank::createAccount(int _userId)
      Account newAcc = Account(_userId, setAccId++, ++setAccNo, user->getPhoneNo());
      if (addAccount(newAcc, *user))
      {
-          // newAcc.save_csv_data(accounts_csv);
+          newAcc.save_csv_data(accounts_csv);
+          user->save_csv_data(users_csv);
           return true;
      }
      else
@@ -288,15 +290,16 @@ bool Bank::send(int _userId)
           sender = &accounts[users[_userId].accIds[0]];
      else
      {
+          int acc_option = 0;
           do
           {
                cout << endl
                     << "Select Account to pay from" << endl;
                for (int i = 0; i < users[_userId].accIds.size(); i++)
                     cout << "Account [" << i << "]\tAccount No: " << users[_userId].accNumbers[i] << endl;
-               option = input_int();
-          } while (option < 0 || option >= users[_userId].accIds.size());
-          int sender_acc = users[_userId].accIds[option];
+               acc_option = input_int();
+          } while (acc_option < 0 || acc_option >= users[_userId].accIds.size());
+          int sender_acc = users[_userId].accIds[acc_option];
           sender = &accounts[sender_acc];
      }
 
@@ -305,13 +308,13 @@ bool Bank::send(int _userId)
      {
           str_mode = "UPI";
           cout << endl
-               << "Enter UPI id" << endl;
+               << "Enter UPI id" << endl;            
           UPIid = input_string();
-          if (UPIid.compare(sender->getUpi()))
+          cout << UPIid << ", " << sender->getUpi() << endl;
+          if (UPIid == (sender->getUpi()))
           {
-
                cout << endl
-                    << "Sender and Reciever acount cannot be same!" << endl;
+                    << "Sender and Reciever acount (UPI) cannot be same!" << endl;
                pauseConsole();
                return false;
           }
@@ -337,7 +340,7 @@ bool Bank::send(int _userId)
           if (acc_number == sender->getAccNumber())
           {
                cout << endl
-                    << "Sender and Reciever acount cannot be same!" << endl;
+                    << "Sender and Reciever acount (Account number) cannot be same!" << endl;
                pauseConsole();
                return false;
           }
@@ -376,7 +379,9 @@ verify:
           if (pin == sender->getPin())
           {
                sender->setBalance(sender->getBalance() - amount);
+               sender->save_csv_data(accounts_csv);
                reciever->setBalance(reciever->getBalance() + amount);
+               reciever->save_csv_data(accounts_csv);
                cout << endl
                     << "Payment Successful!" << endl;
                cout << "Debited " << amount << " from account " << sender->getAccNumber() << endl;
@@ -385,10 +390,10 @@ verify:
                // To add transection entry in the user's account in vector<Transection> transections
                Transection sendTrans(sender->getAccId(), setTransId, "send", amount, sender->getAccHolder(), reciever->getAccHolder(), str_mode);
                sender->transections.push_back(sendTrans);
-               // sendTrans.save_csv_data(transection_csv);
+               sendTrans.save_csv_data(transection_csv);
                Transection recieveTrans(reciever->getAccId(), setTransId, "recieved", amount, sender->getAccHolder(), reciever->getAccHolder(), str_mode);
                reciever->transections.push_back(recieveTrans);
-               // recieveTrans.save_csv_data(transection_csv);
+               recieveTrans.save_csv_data(transection_csv);
                ++setTransId;
                pauseConsole();
                return true;
@@ -433,6 +438,7 @@ bool Bank::deposit(int _userId)
           amount = input_float();
      } while (amount <= 0);
      deposite_acc->setBalance(deposite_acc->getBalance() + amount);
+     deposite_acc->save_csv_data(accounts_csv);
      cout << endl
           << "Deposited " << amount << " in account " << deposite_acc->getAccNumber() << endl;
 
@@ -495,12 +501,13 @@ bool Bank::withdraw(int _userId)
      if (pin == withdraw_acc->getPin())
      {
           withdraw_acc->setBalance(withdraw_acc->getBalance() - amount);
+          withdraw_acc->save_csv_data(accounts_csv);
           cout << endl
                << "Withdrawn " << amount << " from account " << withdraw_acc->getAccNumber() << endl;
           // To add transection entry in the user's account in vector<Transection> transections
           Transection sendTrans(withdraw_acc->getAccId(), setTransId, "withdraw", amount, to_string(withdraw_acc->getAccNumber()), "Cash", "ATM");
           withdraw_acc->transections.push_back(sendTrans);
-          // sendTrans.save_csv_data(transection_csv);
+          sendTrans.save_csv_data(transection_csv);
           ++setTransId;
           pauseConsole();
           return true;

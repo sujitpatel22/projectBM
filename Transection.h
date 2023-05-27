@@ -45,13 +45,14 @@ public:
 
     void save_csv_data(ofstream &transections_csv)
     {
-        transections_csv << accId << "," << transId << "," << type << "," << amount << "," << from << "," << to_acc << "," << mode << "," << transTime << endl;
+        transections_csv << accId << "," << transId << "," << type << "," << amount << "," << from << "," << to_acc << "," << mode << "," << transTime;
     }
 
     bool load_csv_data(string lineBuffer)
     {
         string fieldBuffer;
         istringstream iss(lineBuffer);
+        
         getline(iss, fieldBuffer, ',');
         accId = stoi(fieldBuffer);
         getline(iss, fieldBuffer, ',');

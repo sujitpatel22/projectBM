@@ -6,6 +6,7 @@
 #include <ios>
 #include <limits>
 #include <windows.h>
+#include <algorithm>
 using namespace std;
 
 // To check if a number is negative
@@ -180,31 +181,43 @@ float input_float()
 }
 
 // To validate if a date entered is a valid date
-bool is_date(string dob)
+bool is_date(const string &dob)
 {
-    // int days[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    // if (dob.length() != 8)
-    // {
-    //     return false;
-    // }
-    // int m = stoi((to_string(dob[2] + dob[3])));
-    // cout << m <<endl;
-    // if (m <= 0 || m > 12)
-    // {
-    //     return false;
-    // }
-    // int d = stoi((to_string(dob[0] + dob[1])));
-    // cout << d <<endl;
-    // if (d <= 0 || d > days[m])
-    // {
-    //     return false;
-    // }
-    // int y = stoi((to_string(dob[4] + dob[5] + dob[6] + dob[7])));
-    // cout << y <<endl;
-    // if (y < 1900 || y > 2005)
-    // {
-    //     return false;
-    // }
+    if (dob.length() != 8)
+    {
+        return false;
+    }
+    int day = std::stoi(dob.substr(0, 2));
+    int month = std::stoi(dob.substr(2, 2));
+    int year = std::stoi(dob.substr(4, 4));
+    if (month <= 0 || month > 12)
+    {
+        return false;
+    }
+    int maxDays = 31;
+    if (month == 2)
+    {
+        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+        {
+            maxDays = 29;
+        }
+        else
+        {
+            maxDays = 28;
+        }
+    }
+    else if (month == 4 || month == 6 || month == 9 || month == 11)
+    {
+        maxDays = 30;
+    }
+    if (day <= 0 || day > maxDays)
+    {
+        return false;
+    }
+    if (year < 1900 || year > 2005)
+    {
+        return false;
+    }
     return true;
 }
 
@@ -234,12 +247,14 @@ void pauseConsole()
 {
     cout << endl
          << "Press any key to continue!" << endl;
-    cin.ignore();
+    cin.clear();
     cin.get();
 }
 
-// int abbort()
-// {   cout<<"[-1]\t Back\t"
-
-//     return false;
-// }
+string removeNonNumericCharacters(const string &str)
+{
+    string result;
+    copy_if(str.begin(), str.end(), back_inserter(result), [](char c)
+            { return isdigit(c); });
+    return result;
+}

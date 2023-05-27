@@ -127,9 +127,7 @@ public:
     void save_csv_data(ofstream &accounts_csv)
     {
         // Save the created object in account_csv file.
-        accounts_csv << accId << "," << accUserId << ","
-                     << "," << accNumber << ","
-                     << "," << accHolder << "," << balance << "," << UPI << "," << accPin << "," << accType << "," << IFSCcode << endl;
+        accounts_csv << accId << "," << accUserId << "," << static_cast<long long>(accNumber) << "," << accHolder << "," << balance << "," << UPI << "," << accPin << "," << accType << endl;
     }
 
     bool load_csv_data(string lineBuffer)
@@ -152,8 +150,6 @@ public:
         accPin = (stoi(fieldBuffer));
         getline(iss, fieldBuffer, ',');
         accType = (fieldBuffer);
-        getline(iss, fieldBuffer, ',');
-        IFSCcode = fieldBuffer;
 
         return true;
     }

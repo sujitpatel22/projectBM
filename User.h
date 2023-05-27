@@ -66,11 +66,11 @@ public:
             }
         }
         SetConsoleEcho(true);
-        system("cls");
-        cout << endl
-             << "Date of Birth (format: DDMMYYYY) :" << endl;
         do
         {
+            system("cls");
+            cout << endl
+                 << "Date of Birth (format: DDMMYYYY) :" << endl;
             DOB = input_string();
         } while (!is_date(DOB));
         while (true)
@@ -112,6 +112,7 @@ public:
              << "DoB: " << DOB[0] + DOB[1] << "-" << DOB[2] + DOB[3] << "-" << DOB[4] + DOB[5] + DOB[6] + DOB[7] << endl;
         cout << endl
              << "Phone number: " << phoneNo << endl;
+
         pauseConsole();
     }
 
@@ -156,16 +157,17 @@ public:
 
     void save_csv_data(ofstream &users_csv)
     {
-        users_csv << "," << userId << "," << username << "," << password << "," << DOB << "," << phoneNo << ",";
+        users_csv << userId << "," << username << "," << password << "," << DOB << "," << phoneNo << ",";
         for (int accId : accIds)
         {
             users_csv << accId << "/";
         }
         users_csv << ",";
-        for (int accNo : accNumbers)
+        for (unsigned long long accNo : accNumbers)
         {
-            users_csv << accNo << "/";
+            users_csv << static_cast<long long>(accNo) << "/";
         }
+        users_csv << "," << endl;
     }
 
     bool load_csv_data(string lineBuffer)
@@ -183,15 +185,24 @@ public:
         getline(iss, fieldBuffer, ',');
         DOB = fieldBuffer;
         getline(iss, fieldBuffer, ',');
-        phoneNo = stol(fieldBuffer);
+        phoneNo = stoll(fieldBuffer);
         // Loading public data...
         getline(iss, fieldBuffer, ',');
         istringstream isf(fieldBuffer);
         while (getline(isf, charBuffer, '/'))
+        {
             accIds.push_back(stoi(charBuffer));
+            cout << charBuffer << ", ";
+        }
+        cout << endl;
         getline(iss, fieldBuffer, ',');
-        while (getline(isf, charBuffer, '/'))
-            accNumbers.push_back(stoull(charBuffer)); // requires chechsum
+        istringstream isf2(fieldBuffer);
+        while (getline(isf2, charBuffer, '/'))
+        {
+            accNumbers.push_back(stoull(charBuffer));
+            cout << charBuffer << ", ";
+        }
+        cout << endl;
 
         return true;
     }
