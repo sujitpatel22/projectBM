@@ -112,11 +112,7 @@ public:
              << "DoB: " << DOB[0] + DOB[1] << "-" << DOB[2] + DOB[3] << "-" << DOB[4] + DOB[5] + DOB[6] + DOB[7] << endl;
         cout << endl
              << "Phone number: " << phoneNo << endl;
-        cout << endl
-             << "Press any key to continue!" << endl;
-        cin.clear();
-        cin.ignore();
-        cin.get();
+        pauseConsole();
     }
 
     // Authenticate User

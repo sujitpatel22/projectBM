@@ -91,6 +91,7 @@ void Bank::menu()
                cout << "[1]\tRegister" << endl;
                cout << "[2]\tLogin" << endl;
                cout << "[0]\tExit" << endl;
+
                option = input_int();
           } while (option < 0 || option > 2);
           if (option == 1)
@@ -125,6 +126,9 @@ bool Bank::home(int _userId)
           cout << "[6]\tView Account transections" << endl;
           cout << "[7]\tClose account" << endl;
           cout << "[8]\tLogout" << endl;
+
+          cout << endl
+               << "Select Operation:\t";
           option = input_int();
 
           if (option == 1)
@@ -194,11 +198,7 @@ int Bank::login()
      }
      cout << endl
           << "User not found!" << endl;
-     cout << endl
-          << "Press any key to continue!" << endl;
-     cin.clear();
-     cin.ignore();
-     cin.get();
+     pauseConsole();
      return -1;
 }
 
@@ -235,6 +235,12 @@ bool Bank::addAccount(Account &newAcc, User &user)
 // accountId(accId) will be added in the user's account-Ids (accIds) vector.
 bool Bank::createAccount(int _userId)
 {
+     if (accounts.size() >= 3)
+     {
+          cout << "You have reached the limit of number of accounts you can open!" << endl;
+          pauseConsole();
+          return false;
+     }
      int option;
      User *user = &users[_userId];
      Account newAcc = Account(_userId, setAccId++, ++setAccNo, user->getPhoneNo());
@@ -306,10 +312,7 @@ bool Bank::send(int _userId)
 
                cout << endl
                     << "Sender and Reciever acount cannot be same!" << endl;
-               cout << endl
-                    << "Press any key to continue!" << endl;
-               cin.ignore();
-               cin.get();
+               pauseConsole();
                return false;
           }
           for (auto acc : accounts)
@@ -322,11 +325,7 @@ bool Bank::send(int _userId)
           }
           cout << endl
                << "Account not found!" << endl;
-          cout << endl
-               << "Press any key to continue!" << endl;
-          cin.clear();
-          cin.ignore();
-          cin.get();
+          pauseConsole();
           return false;
      }
      else
@@ -337,13 +336,9 @@ bool Bank::send(int _userId)
           acc_number = input_ullong();
           if (acc_number == sender->getAccNumber())
           {
-
                cout << endl
                     << "Sender and Reciever acount cannot be same!" << endl;
-               cout << endl
-                    << "Press any key to continue!" << endl;
-               cin.ignore();
-               cin.get();
+               pauseConsole();
                return false;
           }
           for (auto acc : accounts)
@@ -356,11 +351,7 @@ bool Bank::send(int _userId)
           }
           cout << endl
                << "Account not found!" << endl;
-          cout << endl
-               << "Press any key to continue!" << endl;
-          cin.clear();
-          cin.ignore();
-          cin.get();
+          pauseConsole();
           return false;
      }
 verify:
@@ -399,20 +390,12 @@ verify:
                reciever->transections.push_back(recieveTrans);
                // recieveTrans.save_csv_data(transection_csv);
                ++setTransId;
-               cout << endl
-                    << "Press any key to continue!" << endl;
-               cin.clear();
-               cin.ignore();
-               cin.get();
+               pauseConsole();
                return true;
           }
           cout << endl
                << "Wrong Pin!" << endl;
-          cout << endl
-               << "Press any key to continue!" << endl;
-          cin.clear();
-          cin.ignore();
-          cin.get();
+          pauseConsole();
      }
      return false;
 }
@@ -470,11 +453,7 @@ bool Bank::deposit(int _userId)
      //      }
      // }
 
-     cout << endl
-          << "Press any key to continue!" << endl;
-     cin.clear();
-     cin.ignore();
-     cin.get();
+     pauseConsole();
      return true;
 }
 
@@ -523,20 +502,12 @@ bool Bank::withdraw(int _userId)
           withdraw_acc->transections.push_back(sendTrans);
           // sendTrans.save_csv_data(transection_csv);
           ++setTransId;
-          cout << endl
-               << "Press any key to continue!" << endl;
-          cin.clear();
-          cin.ignore();
-          cin.get();
+          pauseConsole();
           return true;
      }
      cout << endl
           << "Wrong Pin!" << endl;
-     cout << endl
-          << "Press any key to continue!" << endl;
-     cin.clear();
-     cin.ignore();
-     cin.get();
+     pauseConsole();
      return false;
 }
 
@@ -571,6 +542,7 @@ bool Bank::accInfo(int _userId)
      {
           cout << endl
                << "Wrong Pin! " << endl;
+          pauseConsole();
           return false;
      }
      else
@@ -589,11 +561,7 @@ bool Bank::accInfo(int _userId)
           cout << "IFSC code" << acc->IFSCcode << endl
                << endl;
 
-          cout << endl
-               << "Press any key to continue!" << endl;
-          cin.clear();
-          cin.ignore();
-          cin.get();
+          pauseConsole();
           return true;
      }
 }
@@ -626,11 +594,7 @@ bool Bank::listAccTransections(int _userId)
      {
           cout << endl
                << "Wrong Pin! " << endl;
-          cout << endl
-               << "Press any key to continue!" << endl;
-          cin.clear();
-          cin.ignore();
-          cin.get();
+          pauseConsole();
           return false;
      }
      acc->listTransections();

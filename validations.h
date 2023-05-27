@@ -229,3 +229,17 @@ bool SetConsoleEcho(bool enableEcho)
 
     return true;
 }
+
+void pauseConsole()
+{
+    cout << endl
+         << "Press any key to continue!" << endl;
+    cin.ignore();
+    cin.get();
+}
+
+// int abbort()
+// {   cout<<"[-1]\t Back\t"
+
+//     return false;
+// }

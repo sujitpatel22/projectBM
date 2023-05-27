@@ -24,7 +24,7 @@ public:
     // Making class 'Bank' as friend; so that bank can access all the data of accounts.
     friend class Bank;
     string accType;
-    string IFSCcode;
+    string IFSCcode = "AMT0474005";
     // Vector of transection objects to store transection entries
     vector<Transection> transections;
 
@@ -77,11 +77,7 @@ public:
              << "Account holder's name: " << accHolder << endl;
         cout << endl
              << "UPI id: " << UPI << endl;
-        cout << endl
-             << "Press any key to continue!" << endl;
-        cin.clear();
-        cin.ignore();
-        cin.get();
+        pauseConsole();
     }
 
     // To update the account
@@ -120,10 +116,7 @@ public:
             cout << "mode : " << trans.mode << endl;
             cout << "Transection Time: " << trans.transTime << endl;
         }
-        cout << endl
-             << "Press any key to continue!" << endl;
-        cin.ignore();
-        cin.get();
+        pauseConsole();
     }
 
     // ~Account()
