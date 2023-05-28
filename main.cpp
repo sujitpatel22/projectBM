@@ -39,7 +39,7 @@ int main(void)
         cout << "Unable to open CSV files to write data" << endl;
         exit(1);
     }
-    pauseConsole();
+    bank.welcome();
     bank.menu();
 }
 

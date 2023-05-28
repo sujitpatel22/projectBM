@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <windows.h>
 #include "validations.h"
-// #include <ncurses.h>
+#include <ncurses.h>
 #include "User.h"
 #include "Account.h"
 #include "Transection.h"
@@ -74,6 +74,13 @@ public:
                return false;
           }
           return true;
+     }
+
+     void welcome()
+     {
+          cout << endl
+               << "Welcome to Bank Management System" << endl;
+          pauseConsole();
      }
 };
 
@@ -308,7 +315,7 @@ bool Bank::send(int _userId)
      {
           str_mode = "UPI";
           cout << endl
-               << "Enter UPI id" << endl;            
+               << "Enter UPI id" << endl;
           UPIid = input_string();
           cout << UPIid << ", " << sender->getUpi() << endl;
           if (UPIid == (sender->getUpi()))
