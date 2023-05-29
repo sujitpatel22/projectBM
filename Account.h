@@ -67,7 +67,7 @@ public:
         do
         {
             balance = input_float();
-        } while (balance <= 0);
+        } while (balance <= 0 || balance > 9999);
         UPI = to_string(_userId) + to_string(_phoneNo % 1000) + to_string(_accNo % 1000) + "@AmiBnk";
         system("cls");
         cout << "Success! Account created!" << endl;

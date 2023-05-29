@@ -192,17 +192,13 @@ public:
         while (getline(isf, charBuffer, '/'))
         {
             accIds.push_back(stoi(charBuffer));
-            cout << charBuffer << ", ";
         }
-        cout << endl;
         getline(iss, fieldBuffer, ',');
         istringstream isf2(fieldBuffer);
         while (getline(isf2, charBuffer, '/'))
         {
             accNumbers.push_back(stoull(charBuffer));
-            cout << charBuffer << ", ";
         }
-        cout << endl;
 
         return true;
     }

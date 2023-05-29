@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <windows.h>
 #include "validations.h"
-#include <ncurses.h>
+// #include <ncurses.h>
 #include "User.h"
 #include "Account.h"
 #include "Transection.h"
@@ -373,6 +373,7 @@ verify:
               << endl
               << "Low Account Balance!" << endl
               << "Cannot proceed transection!" << endl;
+          pauseConsole();
           return false;
      }
      else
@@ -448,24 +449,6 @@ bool Bank::deposit(int _userId)
      deposite_acc->save_csv_data(accounts_csv);
      cout << endl
           << "Deposited " << amount << " in account " << deposite_acc->getAccNumber() << endl;
-
-     // Updating the data_csv file upon account update.
-     // Need to update the balance only.
-     // {
-     //      string line;
-     //      string tempId;
-     //      while(getline(accounts_csv, line, "\n"))
-     //      {
-     //           while(getline(line, tempId, ","))
-     //           {
-     //                if(stoi(tempId) == _userId)
-     //                {
-
-     //                }
-     //           }
-     //      }
-     // }
-
      pauseConsole();
      return true;
 }
@@ -499,7 +482,7 @@ bool Bank::withdraw(int _userId)
           cout << endl
                << "Enter amount to withdraw: " << endl;
           amount = input_float();
-     } while (amount <= 0);
+     } while (amount <= 0 || amount > withdraw_acc->getBalance());
      cout << endl
           << "Enter transection pin" << endl;
      SetConsoleEcho(false);
