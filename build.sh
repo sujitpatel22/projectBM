@@ -1,0 +1,1 @@
+g++ main.cpp -L E:\msys64\mingw64\lib\ -lpdcurses
